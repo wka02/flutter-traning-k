@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({required String title,super.key,}) : _title = title;
 
+  final String _title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
