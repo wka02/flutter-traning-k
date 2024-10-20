@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({required String title,super.key,}) : _title = title;
 
-  final String _title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -38,10 +37,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget._title),
-      ),
       body: Center(
         child: Row(
           children: [
@@ -54,29 +49,68 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  AspectRatio(
-                    aspectRatio: 1,
-                    child: Placeholder(),
+                  Expanded(
+                    flex: 50,
+                    child: SizedBox(),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 16, bottom: 16),
-                    child: Row(
+                  Expanded(
+                    flex: 0,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Expanded(
-                          flex: 50,
-                          child: Text('** ℃',
-                              style: TextStyle(color: Colors.blue),
-                              textAlign: TextAlign.left,),
+                        AspectRatio(
+                          aspectRatio: 1,
+                          child: Placeholder(),
                         ),
-                        Expanded(
-                          flex: 50,
-                          child: Text('** ℃',
-                              style: TextStyle(
-                                color: Colors.red,
+                        Padding(
+                          padding: EdgeInsets.only(top: 16, bottom: 16),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                flex: 50,
+                                child: Text('** ℃',
+                                  style: TextStyle(color: Colors.blue),
+                                  textAlign: TextAlign.center,),
                               ),
-                              textAlign: TextAlign.right,),
+                              Expanded(
+                                flex: 50,
+                                child: Text('** ℃',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                  ),
+                                  textAlign: TextAlign.center,),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 50,
+                    child:Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(top:80),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 50,
+                              child: Text('Close',
+                                style: TextStyle(color: Colors.blue),
+                                textAlign: TextAlign.center,),
+                            ),
+                            Expanded(
+                              flex: 50,
+                              child: Text('Reload',
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                ),
+                                textAlign: TextAlign.center,),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -88,11 +122,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
