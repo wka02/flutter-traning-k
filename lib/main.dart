@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
+import 'package:yumemi_weather/yumemi_weather.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +24,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({required String title,super.key,}) : _title = title;
+  const MyHomePage({
+    required String title,
+    super.key,
+  }) : _title = title;
 
   final String _title;
 
@@ -30,10 +36,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void _incrementCounter() {
-    setState(() {
-    });
-  }
+  String weather = '';
+
+  String imageURL = '';
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +50,12 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 25,
               child: Container(),
             ),
-            const Expanded(
+            Expanded(
               flex: 50,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(
+                  const Expanded(
                     flex: 50,
                     child: SizedBox(),
                   ),
@@ -61,7 +66,13 @@ class _MyHomePageState extends State<MyHomePage> {
                       children: [
                         AspectRatio(
                           aspectRatio: 1,
-                          child: Placeholder(),
+                          child: imageURL == ''?const Placeholder(): SvgPicture.network(
+                            imageURL,
+                            placeholderBuilder: (BuildContext context) =>
+                                Container(
+                                    padding: const EdgeInsets.all(30.0),
+                                    child: const CircularProgressIndicator()),
+                          ),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 16, bottom: 16),
@@ -69,17 +80,21 @@ class _MyHomePageState extends State<MyHomePage> {
                             children: [
                               Expanded(
                                 flex: 50,
-                                child: Text('** ℃',
+                                child: Text(
+                                  '** ℃',
                                   style: TextStyle(color: Colors.blue),
-                                  textAlign: TextAlign.center,),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                               Expanded(
                                 flex: 50,
-                                child: Text('** ℃',
+                                child: Text(
+                                  '** ℃',
                                   style: TextStyle(
                                     color: Colors.red,
                                   ),
-                                  textAlign: TextAlign.center,),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ],
                           ),
@@ -89,25 +104,47 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   Expanded(
                     flex: 50,
-                    child:Align(
+                    child: Align(
                       alignment: Alignment.topCenter,
                       child: Padding(
-                        padding: EdgeInsets.only(top:80),
+                        padding: const EdgeInsets.only(top: 80),
                         child: Row(
                           children: [
-                            Expanded(
+                            const Expanded(
                               flex: 50,
-                              child: Text('Close',
+                              child: Text(
+                                'Close',
                                 style: TextStyle(color: Colors.blue),
-                                textAlign: TextAlign.center,),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                             Expanded(
                               flex: 50,
-                              child: Text('Reload',
-                                style: TextStyle(
-                                  color: Colors.blue,
+                              child: TextButton(
+                                onPressed: () {
+                                  final yumemiWeather = YumemiWeather();
+                                  final weatherCondition =
+                                      yumemiWeather.fetchSimpleWeather();
+                                  print('Weather Condition: $weatherCondition');
+                                  setState(() {
+                                    if(weather == 'sunny'){
+                                      imageURL = 'https://raw.githubusercontent.com/yumemi-inc/flutter-training-template/refs/heads/main/docs/sessions/images/api/sunny.svg';
+                                    } else if (weather == 'cloudy'){
+                                      imageURL = 'https://raw.githubusercontent.com/yumemi-inc/flutter-training-template/refs/heads/main/docs/sessions/images/api/cloudy.svg';
+                                    } else if (weather == 'rainy'){
+                                      imageURL = 'https://raw.githubusercontent.com/yumemi-inc/flutter-training-template/refs/heads/main/docs/sessions/images/api/rainy.svg';
+                                    }
+                                    weather = weatherCondition;
+                                  });
+                                },
+                                child: const Text(
+                                  'Reload',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                  ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                textAlign: TextAlign.center,),
+                              ),
                             ),
                           ],
                         ),
