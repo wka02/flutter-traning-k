@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:yumemi_weather/yumemi_weather.dart';
+import 'first.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,10 +19,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: FirstScreen(),
     );
   }
 }
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
@@ -30,6 +32,7 @@ class MyHomePage extends StatefulWidget {
   }) : _title = title;
 
   final String _title;
+
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -110,12 +113,21 @@ class _MyHomePageState extends State<MyHomePage> {
                         padding: const EdgeInsets.only(top: 80),
                         child: Row(
                           children: [
-                            const Expanded(
+                            Expanded(
                               flex: 50,
-                              child: Text(
-                                'Close',
-                                style: TextStyle(color: Colors.blue),
-                                textAlign: TextAlign.center,
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute<void>(builder: (context) => FirstScreen()),
+                                        (_) => false,
+                                  );
+                                },
+                                child: const Text(
+                                  'Close',
+                                  style: TextStyle(color: Colors.blue),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                             Expanded(
